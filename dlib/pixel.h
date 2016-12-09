@@ -654,7 +654,7 @@ namespace dlib
 
             if (less_or_equal_to_max<P1>(src))
                 if (greater_or_equal_to_min<P1>(src))
-                    dest = static_cast<P1>(src);
+                    dest = (P1)(src);
                 else
                     dest = pixel_traits<P1>::min();
             else
@@ -724,40 +724,7 @@ namespace dlib
                                                                   static_cast<unsigned int>(src.green) +  
                                                                   static_cast<unsigned int>(src.blue))/3); 
 
-            if (src.alpha == 255)
-            {
                 assign_pixel(dest, avg);
-            }
-            else
-            {
-                // perform this assignment using fixed point arithmetic: 
-                // dest = src*(alpha/255) + dest*(1 - alpha/255);
-                // dest = src*(alpha/255) + dest*1 - dest*(alpha/255);
-                // dest = dest*1 + src*(alpha/255) - dest*(alpha/255);
-                // dest = dest*1 + (src - dest)*(alpha/255);
-                // dest += (src - dest)*(alpha/255);
-
-                int temp = avg;
-                // copy dest into dest_copy using assign_pixel to avoid potential
-                // warnings about implicit float to int warnings.
-                int dest_copy;
-                assign_pixel(dest_copy, dest);
-
-                temp -= dest_copy;
-
-                temp *= src.alpha;
-
-                temp /= 255;
-
-                assign_pixel(dest, temp+dest_copy);
-            }
-        }
-
-        template < typename P1, typename P2 >
-        typename enable_if_c<pixel_traits<P1>::grayscale && pixel_traits<P2>::hsi>::type
-        assign(P1& dest, const P2& src) 
-        { 
-            assign_pixel(dest, src.i);
         }
 
         template < typename P1, typename P2 >

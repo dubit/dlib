@@ -491,7 +491,7 @@ namespace dlib
     class input_rgb_image_pyramid
     {
     public:
-        typedef matrix<rgb_pixel> input_type;
+        typedef matrix<rgb_alpha_pixel> input_type;
         typedef PYRAMID_TYPE pyramid_type;
 
         input_rgb_image_pyramid (

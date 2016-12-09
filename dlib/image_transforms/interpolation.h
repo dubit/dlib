@@ -201,8 +201,6 @@ namespace dlib
             pixel_type& result
         ) const
         {
-            COMPILE_TIME_ASSERT(pixel_traits<typename image_view_type::pixel_type>::has_alpha == false);
-
             const long left   = static_cast<long>(std::floor(p.x()));
             const long top    = static_cast<long>(std::floor(p.y()));
             const long right  = left+1;
@@ -237,8 +235,6 @@ namespace dlib
             pixel_type& result
         ) const
         {
-            COMPILE_TIME_ASSERT(pixel_traits<typename image_view_type::pixel_type>::has_alpha == false);
-
             const long left   = static_cast<long>(std::floor(p.x()));
             const long top    = static_cast<long>(std::floor(p.y()));
             const long right  = left+1;
@@ -664,7 +660,9 @@ namespace dlib
 // ----------------------------------------------------------------------------------------
 
     template <typename image_type>
-    struct is_rgb_image { const static bool value = pixel_traits<typename image_traits<image_type>::pixel_type>::rgb; };
+    struct is_rgb_image {
+        const static bool value = pixel_traits<typename image_traits<image_type>::pixel_type>::rgb || pixel_traits<typename image_traits<image_type>::pixel_type>::rgb_alpha;
+    };
     template <typename image_type>
     struct is_grayscale_image { const static bool value = pixel_traits<typename image_traits<image_type>::pixel_type>::grayscale; };
 
